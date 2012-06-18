@@ -28,7 +28,7 @@ ScriptID SourceID Filename
 3115 17958 SingleCompile.zip
 2754 14758 delimitMate.vba
 3329 15317 vimcalc.zip
-3465 17112 tagbar.vba
+3465 18143 tagbar.vba
 3304 18081 gundo.zip
 3375 17065 notes.zip
 3286 14310 LiteTabPage.vim
@@ -40,7 +40,7 @@ ScriptID SourceID Filename
 4056 18046 jsoncodecs.zip
 4050 18045 jsruntime.tar.003
 2736 17476 syntastic.zip
-31 7218 a.vim
+2590 14047 fswitch-0.9.3.zip
 2834 18080 vim-template-0.3.0.zip
 2736 17476 syntastic.zip
 3736 17830 ctrlp.zip

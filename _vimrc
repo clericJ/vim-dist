@@ -10,6 +10,7 @@
 
 " XXX Произведена замена плагина FuzzyFinder на ctrlp функционал
 " тестируется
+" TODO: сменить плагин a.vim на FSwitch
 " TODO:
     " нашёл способ использовать несколько шрифтов в одном окне vim
     "hi StatusLineBufferLinesPercent gui=bold font=consolas:h9
@@ -199,11 +200,6 @@
 " "jsoncodecs"
 " ( http://www.vim.org/scripts/script.php?script_id=4056 )
 "
-" "a"
-" Быстрый переход от заголовочного файла к реализации и обратно
-" (для С++/С)
-" ( http://www.vim.org/scripts/script.php?script_id=31 )
-"
 " "neocomplcache-clang"
 " 'Умное' авто-завершение кода для С++/С совместимый с neocomplcache complete
 " requres-tool: clang
@@ -220,7 +216,12 @@
 " "ctrlp"
 " быстрый нечёткий поиск по файлам и буферам
 " ( http://www.vim.org/scripts/script.php?script_id=3736 )
-
+"
+" "vim-fswitch"
+" Быстрый переход от заголовочного файла к реализации и обратно
+" (для С++/С)
+" ( http://www.vim.org/scripts/script.php?script_id=2590 )
+"
 " ==============================================================================
 " "Primary"                 Приоритетные настройки {{{1
 " ==============================================================================
@@ -818,7 +819,7 @@ Bundle "jsoncodecs"
 if s:python_installed
     Bundle "SingleCompile"
     Bundle "vimcalc"
-    Bundle "pyinteractive"
+    Bundle "pyinteractive-vim"
     Bundle "pyflakes-vim"
     Bundle "ropevim"
     Bundle "gundo"
@@ -835,10 +836,10 @@ Bundle "pythonsyntax"
 Bundle "LiteTabPage"
 Bundle "jpythonfold"
 Bundle "themes"
-Bundle "a"
 Bundle "vim-template"
 Bundle "syntastic"
 Bundle "ctrlp"
+Bundle "vim-fswitch"
 
 " Тестируемые"
 Bundle "vim-css-color"
