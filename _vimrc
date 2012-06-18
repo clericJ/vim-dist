@@ -10,7 +10,6 @@
 
 " XXX Произведена замена плагина FuzzyFinder на ctrlp функционал
 " тестируется
-" TODO: сменить плагин a.vim на FSwitch
 " TODO:
     " нашёл способ использовать несколько шрифтов в одном окне vim
     "hi StatusLineBufferLinesPercent gui=bold font=consolas:h9

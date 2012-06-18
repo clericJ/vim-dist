@@ -1,5 +1,8 @@
-" Use clang dll.
+" Use clang lib (dll/so)
 let g:neocomplcache_clang_use_library = 1
+" Library path
+let g:neocomplcache_clang_library_path='D:/bin/LLVM/lib'
+
 " More user include path.
 let g:neocomplcache_clang_user_options =
 \ '-ID:/bin/minGW/include ' .
@@ -9,4 +12,3 @@ let g:neocomplcache_clang_user_options =
 " More neocomplcache candidates.
 let g:neocomplcache_max_list = 300
 
-let g:neocomplcache_clang_library_path='D:/bin/LLVM/lib'

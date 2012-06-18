@@ -12,10 +12,10 @@ def echo(color, text):
     vim.command("echohl {0} | echo '{1}' | echohl None".format(color, text))
 
 # In my colorcheme
-echo.red = partial(echo, 'Tag')
-echo.blue = partial(echo, 'Structure')
-echo.green = partial(echo, 'Define')
+echo.failed = partial(echo, 'Tag')
 echo.normal = partial(echo, 'Normal')
+echo.updated = partial(echo, 'Structure')
+echo.created = partial(echo, 'Define')
 
 for root, dirs, files in os.walk(bundles_dir):
     for dir_ in dirs:
@@ -35,11 +35,11 @@ for root, dirs, files in os.walk(bundles_dir):
                     new_hash = hashlib.md5()
                     new_hash.update(open(tagsfile, 'rb').read())
                     if tags_hash.hexdigest() != new_hash.hexdigest():
-                        echo.blue('[updated] ' + tagsfile)
+                        echo.updated('[updated] ' + tagsfile)
                     else:
                         echo.normal('[already up-to-date] ' + tagsfile)
                 else:
-                    echo.green('[created] ' + tagsfile)
+                    echo.created('[created] ' + tagsfile)
             else:
-                echo.red('[create failed] ' + tagsfile)
+                echo.failed('[create failed] ' + tagsfile)
 EOF
