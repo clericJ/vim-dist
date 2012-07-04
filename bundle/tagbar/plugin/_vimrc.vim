@@ -12,7 +12,8 @@ let g:tagbar_width = 30
 "let g:tagbar_compact = 1
 
 " Показывать стрелки вместо +/-
-let g:tagbar_iconchars = ['▶', '▼']
+"let g:tagbar_iconchars = ['▶', '▼']
+let g:tagbar_iconchars = ['▶', '◢']
 
 " Не сортировать
 let g:tagbar_sort = 0

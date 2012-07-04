@@ -7,12 +7,7 @@
 " Однако при таком варианте размещения настроек для плагинов,
 " могут возникнуть проблемы с очерёдностью загрузки, файл
 " настроек должен загружаться раньше самого плагина
-
-" XXX Произведена замена плагина FuzzyFinder на ctrlp функционал
-" тестируется
-" TODO:
-    " нашёл способ использовать несколько шрифтов в одном окне vim
-    "hi StatusLineBufferLinesPercent gui=bold font=consolas:h9
+"
 " TODO: реализовать smartmap и smartmenu
 " "smartmap ni <C-_> test"
 
@@ -36,7 +31,7 @@
 "    "F10" Toggle Fullscreen
 "    "F11" Close Current Window
 "    "F12" Delete Current Buffer
-" ==============================================================================
+"" ==============================================================================
 " Установленные плагины и их зависимости {{{1
 " "taglist"
 " просмотр списка тегов/навигатор по коду
@@ -56,11 +51,11 @@
 " ( http://www.vim.org/scripts/script.php?script_id=1708 )
 "   requres-tool: iconv.dll
 "
-" "NERD_commenter"
+" "nerdcommenter"
 " работа с комментариями в коде
 " ( http://www.vim.org/scripts/script.php?script_id=1218 )
 "
-" "NERD_Tree"
+" "nerdtree"
 " просмотр файловой системы
 " ( http://www.vim.org/scripts/script.php?script_id=1658 )
 "
@@ -363,9 +358,9 @@ set lazyredraw
 
 " Испольвозать англоязычный интерфес
 if s:iswin
-  language message en
+    language message en
 else " для linux
-  language mes C
+    language mes C
 endif
 
 " русская раскладка клавиатуры
@@ -428,7 +423,7 @@ if has('gui_running')
         if s:us_use_dark_colorscheme
             set gfn=DejaVu_Sans_Mono:h10:cRUSSIAN,consolas:h11
         else
-            set gfn=consolas:h11,DejaVu_Sans_Mono:h10:cRUSSIAN
+            set gfn=DejaVu_Sans_Mono:h10:b:cRUSSIAN,consolas:h11
         endif
 
     elseif has("gui_gtk2")
@@ -437,7 +432,7 @@ if has('gui_running')
 
     " Цветовая схема по умолчанию
     if s:us_use_dark_colorscheme
-        colorscheme twilight
+        colorscheme tesla
     else
         colorscheme geon
     endif
@@ -787,7 +782,6 @@ call vundle#rc()
 Bundle "vundle"
 Bundle "getscript"
 Bundle "netrw"
-"Bundle "taglist"
 Bundle "matrix"
 Bundle "fencview"
 Bundle "nerdcommenter"
@@ -796,8 +790,6 @@ Bundle "matchit"
 Bundle "mru"
 Bundle "sessionman"
 Bundle "calendar"
-"Bundle "vim-l9"
-"Bundle "vim-fuzzyfinder"
 Bundle "neocomplcache"
 Bundle "neocomplcache-snippets-complete"
 Bundle "vcscommand"
@@ -913,6 +905,18 @@ function! s:GetSelection()
     let l:line = strpart(l:line, col("'<") - 1, col("'>") - col("'<") + 1)
     return l:line
 endfunction
+
+"function! HtmlizeSelection()
+"   let selected = s:GetSelection()
+"   let selected = substitute(line, '&', '\&amp;', 'g')
+"   let selected = substitute(line, '<', '\&lt;', 'g')
+"   let selected = substitute(line, '>', '\&gt;', 'g')
+"   let selected = substitute(line, '"', '\&quot;', 'g')
+"   call setline(".", line)
+"endfunction
+
+"nmap ,h :call HtmlizeSelection()<cr>
+"vmap ,h :call HtmlizeSelection()<cr>
 
 "recalculate the tab warning flag when idle and after writing
 autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning

@@ -1,5 +1,5 @@
-#ifndef <+FILE_NAME+>
-#define <+FILE_NAME+>
+#ifndef <+FILE_NAME+>_H_INCLUDED
+#define <+FILE_NAME+>_H_INCLUDED
 
 
-#endif /* end of include guard */
+#endif /* <+FILE_NAME+>_H_INCLUDED */
