@@ -39,6 +39,7 @@ augroup END
 let g:ropevim_vim_completion = 1
 let g:ropevim_extended_complete = 1
 
+" Открывать проект автоматически
 let g:ropevim_guess_project = 1
 
 " ==============================================================================

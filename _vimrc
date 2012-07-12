@@ -432,7 +432,7 @@ if has('gui_running')
 
     " Цветовая схема по умолчанию
     if s:us_use_dark_colorscheme
-        colorscheme tesla
+        colorscheme twilight
     else
         colorscheme geon
     endif
@@ -740,35 +740,36 @@ endif
 
 amenu PopUp.-Usrsep1- :
 
-" Добавление/удаление отступов к участкам кода
-" (соотв. горячие клавиши клавиши должны быть определенны)
-"nmenu <silent> PopUp.Source\ Code.Indent\ Block<tab><Ctrl-Tab> <C-tab>
-vmenu <silent> PopUp.Source\ Code.Indent\ Block<tab><C-Tab> <C-tab>
-
-"nmenu <silent>  PopUp.Source\ Code.Dedent\ Block<tab><C-S-Tab> <C-S-tab>
-vmenu <silent>  PopUp.Source\ Code.Dedent\ Block<tab><C-S-Tab> <C-S-tab>
-
-nmenu PopUp.Util.Context\ Help<tab><S-k> <S-k>
-imenu PopUp.Util.Context\ Help<tab><S-k> <esc><S-k>
+nmenu PopUp.Source.Context\ Help<tab><S-k> <S-k>
+imenu PopUp.Source.Context\ Help<tab><S-k> <esc><S-k>
 
 " Поиск слова под курсором
-nmenu PopUp.Util.Find\ Word\ Under\ Cursor<tab>g* g*
-imenu PopUp.Util.Find\ Word\ Under\ Cursor<tab>g* <esc>g*
+nmenu PopUp.Source.Find\ Word\ Under\ Cursor<tab>g* g*
+imenu PopUp.Source.Find\ Word\ Under\ Cursor<tab>g* <esc>g*
 
 " Открыть файл, в качестве имени используется слово под курсором
-nmenu PopUp.Util.Open\ File\ Under\ Cursor<tab>gf gf
-imenu PopUp.Util.Open\ File\ Under\ Cursor<tab>gf <esc>gf
+nmenu PopUp.Source.Open\ File\ Under\ Cursor<tab>gf gf
+imenu PopUp.Source.Open\ File\ Under\ Cursor<tab>gf <esc>gf
 
 " Перейти к тэгу
-nmenu PopUp.Util.Jump\ Tag\ Under\ Cursor<tab><C-]> g<C-]>
-imenu PopUp.Util.Jump\ Tag\ Under\ Cursor<tab><C-]> <esc>g<C-]>
+nmenu PopUp.Source.Jump\ Tag\ Under\ Cursor<tab><C-]> g<C-]>
+imenu PopUp.Source.Jump\ Tag\ Under\ Cursor<tab><C-]> <esc>g<C-]>
 
-vmenu PopUp.Util.-Usrsep3- :
+" Экранирование спецсимволов в html
+vmenu <silent> PopUp.Source.Encode\ HTML :call HtmlizeLine()<cr>
+
+vmenu PopUp.Source.-Usrsep3- :
+
+" Добавление/удаление отступов к участкам кода
+vmenu <silent> PopUp.Source.Indent\ Block<tab><C-Tab> <C-tab>
+vmenu <silent>  PopUp.Source.Dedent\ Block<tab><C-S-Tab> <C-S-tab>
+
+vmenu PopUp.Source.-Usrsep5- :
 
 " Изменение регистра символов
-vmenu PopUp.Util.Upper\ Case<tab>U U
-vmenu PopUp.Util.Lower\ Case<tab>u u
-vmenu PopUp.Util.Swap\ Case<tab>~ ~
+vmenu PopUp.Source.Upper\ Case<tab>U U
+vmenu PopUp.Source.Lower\ Case<tab>u u
+vmenu PopUp.Source.Swap\ Case<tab>~ ~
 
 " ==============================================================================
 " "Bundles"                 Пакеты плагинов {{{1
@@ -906,17 +907,43 @@ function! s:GetSelection()
     return l:line
 endfunction
 
+" Функция экранирует Html символы, такие как <>
+function!  HtmlizeLine()
+    let [currentln, col, soff]=getpos(".")[1:]
+    let line = getline(currentln)
+
+    let line = substitute(line, '&', '\&amp;', 'g')
+    let line = substitute(line, '<', '\&lt;', 'g')
+    let line = substitute(line, '>', '\&gt;', 'g')
+    let line = substitute(line, '"', '\&quot;', 'g')
+
+    call setline(currentln, line)
+endfunction
+
 "function! HtmlizeSelection()
-"   let selected = s:GetSelection()
-"   let selected = substitute(line, '&', '\&amp;', 'g')
-"   let selected = substitute(line, '<', '\&lt;', 'g')
-"   let selected = substitute(line, '>', '\&gt;', 'g')
-"   let selected = substitute(line, '"', '\&quot;', 'g')
-"   call setline(".", line)
+
+"    let [sline, scol, soff]=getpos("'<")[1:]
+"    let [eline, ecol, eoff]=getpos("'>")[1:]
+"    if sline>eline || (sline==eline && scol>ecol)
+"       let [sline, scol, eline, ecol]=[eline, ecol, sline, scol]
+"    endif
+"    let currline = sline
+
+"    "call confirm( "top: " . sline . " bottom: " . eline )
+
+"    while currline <= eline
+"       let line = getline(currline)
+"       "let line = substitute(line, '&', '\&amp;', 'g')
+"       let line = substitute(line, '<', '\&lt;', 'g')
+"       let line = substitute(line, '>', '\&gt;', 'g')
+"       let line = substitute(line, '"', '\&quot;', 'g')
+
+"       call setline(currline, line)
+"       let currline = currline + 1
+"    endwhile
+"    return
 "endfunction
 
-"nmap ,h :call HtmlizeSelection()<cr>
-"vmap ,h :call HtmlizeSelection()<cr>
 
 "recalculate the tab warning flag when idle and after writing
 autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
