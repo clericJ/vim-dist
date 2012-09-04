@@ -6,7 +6,9 @@
 " bundle/vim-fuzzyfinder/plugin/_vimrc.vim)
 " Однако при таком варианте размещения настроек для плагинов,
 " могут возникнуть проблемы с очерёдностью загрузки, файл
-" настроек должен загружаться раньше самого плагина
+" настроек должен загружаться раньше самого плагина, для
+" обеспечения данного условия, все конфиги плагинов начинаются
+" со знака подчёркивания
 "
 " TODO: реализовать smartmap и smartmenu
 " "smartmap ni <C-_> test"
@@ -23,7 +25,6 @@
 "Explore Buffers and Files
 "    "F5"  Compile/Execute current file
 "    "F6"  Buffer Explorer
-"    "F7"  List of Files in Directory
 "    "F8"  File Explorer
 
 "Manipulate Windows and Buffers
@@ -79,15 +80,6 @@
 " "calendar"
 " удобный календарь
 " ( http://www.vim.org/scripts/script.php?script_id=52 )
-"
-" "fuzzyfinder"
-" быстрый доступ к многим возможностям
-" ( http://www.vim.org/scripts/script.php?script_id=1984 )
-" requres-plugin: vim-l9
-"
-" "vim-l9"
-" набор общих функций
-" ( http://www.vim.org/scripts/script.php?script_id=3252 )
 "
 " "neocomplcache"
 " улучшенное авто-завершение,
@@ -161,7 +153,7 @@
 "
 " "gundo"
 " Просмотр дерева изменений файла
-"( http://www.vim.org/scripts/script.php?script_id=3304 )
+" ( http://www.vim.org/scripts/script.php?script_id=3304 )
 "
 " "notes"
 " Ведение заметок
@@ -363,9 +355,6 @@ else " для linux
     language mes C
 endif
 
-" русская раскладка клавиатуры
-"set langmap=ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕHГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
-
 " ==============================================================================
 " "Files"                   Настройки для файлов {{{1
 " ==============================================================================
@@ -379,6 +368,10 @@ set fileencodings=ucs-bom,utf-8,cp1251
 set fileformat=unix          " Формат файла по умолчанию
 set fileformats=unix,dos,mac " Порядок определения формата файла
 
+" Удобная навигация по справочной системе vim
+autocmd FileType help nnoremap <buffer> <CR> <C-]>
+autocmd FileType help nnoremap <buffer> <BS> <C-T>
+
 " ==============================================================================
 " "Backup,Undo,Swap"        Резервное копирование {{{1
 " ==============================================================================
@@ -390,14 +383,14 @@ set history=150
 set undolevels=5000
 
 " Настройки отмены изменений
-if v:version >= 703
+if exists("+undofile")
     set undodir=$TEMP
     set undofile
 endif
 
 " Не создавать резервные копии файлов
 set nobackup
-set nowb
+set writebackup
 
 " Отключить swap файлы
 set noswapfile
@@ -451,8 +444,6 @@ endif
 set guioptions-=b   " Отключение скролл-баров
 set guioptions-=r
 set guioptions-=T   " Убрать toolbar
-"set guioptions+=c   " Отключение графических диалогов
-"set guioptions-=e   " Замена графических табов, текстовыми
 
 set number          " Включение отображения номеров строк
 set numberwidth=5
@@ -519,6 +510,9 @@ function! s:InitStatusLine(show_indent_warnings, show_tspace_warnings)
         set stl+=%{StatuslineTrailingSpaceWarning()}
         set stl+=%*
     endif
+    "set stl+=\ %#StatusLineBufferNumber#
+    "set stl+=[%{tagbar#currenttag('%s','')} 
+    "set stl+=]%*\ 
     set stl+=%=      " Выравнивание по правому краю
     set stl+=\ 
     set stl+=Line:
@@ -538,10 +532,9 @@ call s:InitStatusLine(s:us_show_indent_warnings, s:us_show_tspace_warnings)
 " "Indent"                  Отступы и табуляция {{{1
 " ==============================================================================
 
-set autoindent                          " Наследовать отступы предыдущей строки
-"set smartindent                         " Включить 'умные' отступы
-set expandtab                           " Преобразование таба в пробелы
-set shiftwidth=4                        " Размер табуляции по умолчанию
+set autoindent                  " Наследовать отступы предыдущей строки
+set expandtab                   " Преобразование символа табуляции в пробелы
+set shiftwidth=4                " Размер табуляции по умолчанию
 set softtabstop=4
 set tabstop=4
 
@@ -551,10 +544,6 @@ set tabstop=4
 
 set hlsearch        " Включение подсветки слов при поиске
 set incsearch       " Использовать поиск по мере набора
-
-" Использовать регистра-зависимый поиск (для
-" регистра-независимого использовать \с в конце строки шаблона)
-"set noignorecase
 
 set ignorecase " игнорировать регистр при поиске
 set smartcase  " искать сначала по заданному регистру а потом в любом
@@ -645,19 +634,19 @@ endif
 " ==============================================================================
 
 " Найти следующее соответствие, все остальные так же подсвечиваются
-nmap <F3> :set hlsearch<CR>n
-vmap <F3> <esc> :set hlsearch<CR>n i
-imap <F3> <esc> :set hlsearch<CR>n i
+nmap <F3> :set hlsearch<cr>n
+vmap <F3> <esc> :set hlsearch<cr>n i
+imap <F3> <esc> :set hlsearch<cr>n i
 
 " Отключение подсведки найденных выражений
-nmap <C-F3> :nohlsearch<CR>
-imap <C-F3> <Esc>:nohlsearch<CR>
-vmap <C-F3> <Esc>:nohlsearchi<CR>gv
+nmap <C-F3> :nohlsearch<cr>
+imap <C-F3> <esc>:nohlsearch<cr>
+vmap <C-F3> <esc>:nohlsearchi<cr>gv
 
 "" Выполнение/Открытие файла
-"nmap <F5> <esc>:call <SID>OpenFileInDefaultApp()<cr>
-"vmap <F5> <esc>:call <SID>OpenFileInDefaultApp()<cr>i
-"imap <F5> <esc><esc>:call <SID>OpenFileInDefaultApp()<cr>i
+"nmap <F5> <esc>:call <sid>OpenFileInDefaultApp()<cr>
+"vmap <F5> <esc>:call <sid>OpenFileInDefaultApp()<cr>i
+"imap <F5> <esc><esc>:call <sid>OpenFileInDefaultApp()<cr>i
 
 " Загрузка последней сессии (работает если в
 " секции "Сессии" определена команда авто-сохранения)
@@ -678,14 +667,11 @@ imap <F12> <esc>:bdelete<cr>
 
 
 " Создать базу данных для файлов в текущей директории
-map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
 
 " Добавление(Ctrl+Tab)/удаление(Ctrl+Shift+Tab) отступов
-" работает только если выделить текст
 map  ]v          [[V]]
-"map  <C-S-tab>   [[V]]<
 vmap <C-S-tab>   <
-"map  <C-tab>     [[V]]>
 vmap <C-tab>     >
 
 " Комбинации оставленные по умолчанию:
@@ -708,31 +694,33 @@ menu Tools.Macro.Run\ Last<tab>@m @m
 imenu Tools.Macro.Run\ Last<tab>@m <esc>@m
 
 " Удалить лишние пробельные символы
-menu <silent> 45.10  Source.Clean\ Extra\ Spaces :call <SID>TrimWhiteSpace()<CR>
-imenu <silent> 45.10  Source.Clean\ Extra\ Spaces <esc>:call <SID>TrimWhiteSpace()<CR>
+menu <silent> 45.10  Source.Clean\ Extra\ Spaces :call <sid>TrimWhiteSpace()<cr>
+imenu <silent> 45.10  Source.Clean\ Extra\ Spaces <esc>:call <sid>TrimWhiteSpace()<cr>
 
 " Форматирование исходного кода
 menu 45.20 Source.Format\ Code<tab>gg=G gg=G
 imenu 45.20 Source.Format\ Code<tab>gg=G <esc>gg=G
 
 " Приведение отступов к единому стилю
-menu 45.30 Source.Retab<tab>:retab :retab<CR>
-imenu 45.30 Source.Retab<tab>:retab <esc>:retab<CR>
+menu 45.30 Source.Retab<tab>:retab :retab<cr>
+imenu 45.30 Source.Retab<tab>:retab <esc>:retab<cr>
 
 " Открытие файла программой связанной с файлом
-menu <silent> Run.Run<tab> :call <SID>OpenFileInDefaultApp()<cr>
-imenu <silent> Run.Run<tab> <esc>:call <SID>OpenFileInDefaultApp()<cr>i
+menu <silent> Run.Run<tab> :call <sid>OpenFileInDefaultApp()<cr>
+imenu <silent> Run.Run<tab> <esc>:call <sid>OpenFileInDefaultApp()<cr>i
 
 " Получение командной строки
-menu <silent> Run.Command\ Line\ Parameters\ \.\.\. :call <SID>GetCmdline()<cr>
-imenu <silent> Run.Command\ Line\ Parameters\ \.\.\. <ESC>:call <SID>GetCmdline()<cr>i
+menu <silent> Run.Command\ Line\ Parameters\ \.\.\. :call <sid>GetCmdline()<cr>
+imenu <silent> Run.Command\ Line\ Parameters\ \.\.\. <esc>:call <sid>GetCmdline()<cr>i
 
 " Загрузка последней сессии
 " (работает если в секции "Сессии" определена команда авто-сохранения)
 if s:us_autosaveses
-    exec 'menu File.Load\ Last\ Session<tab><F6> :source '.s:lastsession_file.'<cr>'
-    exec 'imenu File.Load\ Last\ Session<tab><F6> <esc>:source '.s:lastsession_file.'<cr>'
+    exec 'menu File.Load\ Last\ Session<tab><F9> :source '.s:lastsession_file.'<cr>'
+    exec 'imenu File.Load\ Last\ Session<tab><F9> <esc>:source '.s:lastsession_file.'<cr>'
 endif
+
+nmenu <silent> Window.Buffers\ to\ Tabs :tab sball<cr>
 
 " ==============================================================================
 " "Popup-menu"              Всплывающее меню {{{1
@@ -800,9 +788,8 @@ Bundle "vim-prettyprint"
 "Bundle "easytags"
 Bundle "shell"
 Bundle "open-associated-programs"
-Bundle "delimitMate"
+"Bundle "delimitMate"
 Bundle "vim-indent-guides"
-"Bundle "headlights"
 Bundle "jsflakes"
 Bundle "jsruntime"
 Bundle "jsoncodecs"
@@ -835,9 +822,11 @@ Bundle "vim-fswitch"
 
 " Тестируемые"
 Bundle "vim-css-color"
+"Bundle "vim-powerline"
+Bundle "vdebug"
+
 
 filetype plugin indent on
-
 
 " ==============================================================================
 " "Plugin.tohtml" {{{1
@@ -865,7 +854,7 @@ endfunction
 
 " Получение от пользователя командной строки с которой будет запускаться
 " скрипт
-function! <SID>GetCmdline()
+function! <sid>GetCmdline()
     let s:cmdline=inputdialog("Enter command line parameters:", s:cmdline, s:cmdline)
 endfunction
 
@@ -908,7 +897,7 @@ function! s:GetSelection()
 endfunction
 
 " Функция экранирует Html символы, такие как <>
-function!  HtmlizeLine()
+function! HtmlizeLine()
     let [currentln, col, soff]=getpos(".")[1:]
     let line = getline(currentln)
 
@@ -917,32 +906,9 @@ function!  HtmlizeLine()
     let line = substitute(line, '>', '\&gt;', 'g')
     let line = substitute(line, '"', '\&quot;', 'g')
 
+
     call setline(currentln, line)
 endfunction
-
-"function! HtmlizeSelection()
-
-"    let [sline, scol, soff]=getpos("'<")[1:]
-"    let [eline, ecol, eoff]=getpos("'>")[1:]
-"    if sline>eline || (sline==eline && scol>ecol)
-"       let [sline, scol, eline, ecol]=[eline, ecol, sline, scol]
-"    endif
-"    let currline = sline
-
-"    "call confirm( "top: " . sline . " bottom: " . eline )
-
-"    while currline <= eline
-"       let line = getline(currline)
-"       "let line = substitute(line, '&', '\&amp;', 'g')
-"       let line = substitute(line, '<', '\&lt;', 'g')
-"       let line = substitute(line, '>', '\&gt;', 'g')
-"       let line = substitute(line, '"', '\&quot;', 'g')
-
-"       call setline(currline, line)
-"       let currline = currline + 1
-"    endwhile
-"    return
-"endfunction
 
 
 "recalculate the tab warning flag when idle and after writing

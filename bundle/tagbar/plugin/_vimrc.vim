@@ -28,4 +28,5 @@ imap <F2> <ESC>:TagbarToggle<cr>
 menu .1 Plugin.Code\ Explorer<tab><F2> :TagbarToggle<cr>
 imenu .1 Plugin.Code\ Explorer<tab><F2> <ESC>:TagbarToggle<cr>i
 
+
 " ==============================================================================

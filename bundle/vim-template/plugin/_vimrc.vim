@@ -1,5 +1,7 @@
 
-autocmd User plugin-template-loaded call s:template_keywords()
+augroup template-plugin
+    autocmd User plugin-template-loaded call s:template_keywords()
+augroup END
 
 function! s:template_keywords()
     if search('<+FILE_NAME+>')

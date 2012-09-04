@@ -6,7 +6,7 @@ import vim
 import os, hashlib
 from functools import partial
 
-bundles_dir = os.path.join(vim.eval('$VIM'), 'bundle')
+bundles_dir = os.path.join(vim.eval('$VIMRUNTIME'), 'bundle')
 
 def echo(color, text):
     vim.command("echohl {0} | echo '{1}' | echohl None".format(color, text))

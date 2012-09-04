@@ -12,9 +12,7 @@ ScriptID SourceID Filename
 521 17773 mru.vim
 2010 15599 sessionman.vim
 52 14880 calendar.vim
-1984 13961 vim-fuzzyfinder.zip
-3252 13948 vim-l9.zip
-2620 17867 neocomplcache-5.0.zip
+2620 18521 neocomplcache-5.0.zip
 1075 15782 netrw.vba.gz
 1502 15362 vimball.tar.gz
 90 17031 vcscommand-1.99.40.zip
@@ -25,10 +23,10 @@ ScriptID SourceID Filename
 3114 17210 easytags.zip
 3123 16974 shell.zip
 3242 14429 open-associated-programs.zip
-3115 17958 SingleCompile.zip
+3115 18352 SingleCompile.zip
 2754 14758 delimitMate.vba
 3329 15317 vimcalc.zip
-3465 18143 tagbar.vba
+3465 18273 tagbar.vba
 3304 18081 gundo.zip
 3375 17065 notes.zip
 3286 14310 LiteTabPage.vim
