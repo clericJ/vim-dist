@@ -268,7 +268,7 @@ endif
 " us - USer option
 let s:us_folding              = 0 " Свертывание участков кода
 let s:us_autosaveses          = 1 " Авто-сохранение сессий (загрузка посл. F9)
-let s:us_linewrap             = 1 " Перенос длинных строк
+let s:us_linewrap             = 0 " Перенос длинных строк
 let s:us_scratch_buffer       = 0 " Сделать из безымянного буфера scratch буфер
 let s:us_show_indent_warnings = 1 " Показывать предупреждения о отступах
                                   " в статусной строке
@@ -367,10 +367,6 @@ set fileencodings=ucs-bom,utf-8,cp1251
 
 set fileformat=unix          " Формат файла по умолчанию
 set fileformats=unix,dos,mac " Порядок определения формата файла
-
-" Удобная навигация по справочной системе vim
-autocmd FileType help nnoremap <buffer> <CR> <C-]>
-autocmd FileType help nnoremap <buffer> <BS> <C-T>
 
 " ==============================================================================
 " "Backup,Undo,Swap"        Резервное копирование {{{1
@@ -619,14 +615,14 @@ if s:us_linewrap
 
     " Перенос по словам
     set linebreak
-
-    if v:version >= 703
-        " Подсвечивать границы
-        set colorcolumn=80
-    endif
 else
     " Запретить перенос строк
     set nowrap
+endif
+
+if v:version >= 703
+    " Подсвечивать границы
+    set colorcolumn=80
 endif
 
 " ==============================================================================
@@ -673,6 +669,10 @@ map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
 map  ]v          [[V]]
 vmap <C-S-tab>   <
 vmap <C-tab>     >
+
+" Удобная навигация по справочной системе vim
+autocmd FileType help nnoremap <buffer> <CR> <C-]>
+autocmd FileType help nnoremap <buffer> <BS> <C-T>
 
 " Комбинации оставленные по умолчанию:
 "
@@ -785,7 +785,6 @@ Bundle "vcscommand"
 Bundle "mark"
 Bundle "visualmark"
 Bundle "vim-prettyprint"
-"Bundle "easytags"
 Bundle "shell"
 Bundle "open-associated-programs"
 "Bundle "delimitMate"
@@ -797,6 +796,7 @@ Bundle "jsoncodecs"
 " Плагины требующие наличие установленного python
 if s:python_installed
     Bundle "SingleCompile"
+    Bundle "easytags"
     Bundle "vimcalc"
     Bundle "pyinteractive-vim"
     Bundle "pyflakes-vim"

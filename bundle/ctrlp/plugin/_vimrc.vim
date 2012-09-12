@@ -15,4 +15,7 @@ imenu <silent> Plugin.Finder.Tags <esc>:CtrlPBufTagAll<cr>
 
 menu <silent> Plugin.Finder.Recently :CtrlPMRU<cr>
 imenu <silent> Plugin.Finder.Recently <esc>:CtrlPMRU<cr>
- 
+
+" Включение расширений
+let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
+                          \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
